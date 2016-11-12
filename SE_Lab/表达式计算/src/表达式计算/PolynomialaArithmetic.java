@@ -34,9 +34,11 @@ public class PolynomialaArithmetic {
 			else 
 			{
 				la=1;
-				a.Set(Input);
-				a.printout();
-				System.out.print("\n");
+				//a.Set(Input);
+				//a.printout(a.finalResult);
+				//System.out.print("\n");
+				String finalResult = a.getExpression(Input);
+				System.out.println(finalResult);
 			}
 		}
 			catch(Exception e)
@@ -46,4 +48,6 @@ public class PolynomialaArithmetic {
 		}
 		lalala.close();
 	}
+
+
 }
