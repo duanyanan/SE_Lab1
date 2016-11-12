@@ -28,7 +28,10 @@ public class PolynomialaArithmetic {
 					if(la==0)
 						System.out.println("尚未输入任何表达式，无法执行命令。\n");
 					else 
-						a.Command(Input);
+					{
+						String finalResult = a.Command(Input);
+						System.out.println(finalResult);
+					}
 				}
 			}
 			else 

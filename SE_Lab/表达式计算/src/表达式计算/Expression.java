@@ -17,7 +17,7 @@ public class Expression {
 	
 	private Expression down;
 	private Expression right;
-	public StringBuffer finalResult = new StringBuffer();
+	//public StringBuffer finalResult = new StringBuffer();
 	
 	public void Set(String expressionInput) throws ArithmeticException
 	{
@@ -481,6 +481,7 @@ public class Expression {
 						flag3=0;
 						if(j.pow==1)
 						{
+							j.simpleOrComplex=true;
 							j.num=1;
 							j.abcOrNum=false;
 						}
@@ -508,7 +509,7 @@ public class Expression {
 		return flag;
 	}
 	
-	public void Command(String commandInput)
+	public String Command(String commandInput)
 	{
 		Expression lalala=new Expression();
 		lalala.Set(thisExpression);
@@ -519,6 +520,7 @@ public class Expression {
 			int j;
 			for(j=4;j<commandInput.length()&&commandInput.charAt(j)!= ' ';j++);
 			var = commandInput.substring(4,j);
+			//System.out.println(var);
 			lalala.derivative(var);
 		}
 		else if (commandInput.substring(1,9).equals("simplify"))
@@ -546,8 +548,10 @@ public class Expression {
 			lalala.change(x,n);
 		}
 		lalala.simplify();
+		StringBuffer finalResult = new StringBuffer();
 		lalala.printout(finalResult);
-		System.out.print("\n");
+		System.out.println(finalResult);
+		return finalResult.toString();
 
 	}
 	
