@@ -1,8 +1,8 @@
 package 表达式计算;
 
-public class Expression {
-	private static final String[][] String = null;
 
+
+public class Expression {
 	private String thisExpression;
 	
 	private boolean simpleOrComplex;
@@ -19,7 +19,7 @@ public class Expression {
 	private Expression right;
 	//public StringBuffer finalResult = new StringBuffer();
 	
-	public void Set(String expressionInput) throws ArithmeticException
+	public void set(String expressionInput) throws ArithmeticException
 	{
 		//¸³³õÊ¼Öµ
 		thisExpression=expressionInput;
@@ -37,7 +37,7 @@ public class Expression {
 			{
 				if(leftTemp.simpleOrComplex&&leftTemp.abc==null&&leftTemp.num==-1)
 				{
-					System.out.println("ERROR!1");
+					//System.out.println("ERROR!1");
 					throw new ArithmeticException();
 				}
 				next = new Expression();
@@ -50,7 +50,7 @@ public class Expression {
 			{
 				if(leftTemp.simpleOrComplex&&leftTemp.abc==null&&leftTemp.num==-1)
 				{
-					System.out.println("ERROR!2");
+					//System.out.println("ERROR!2");
 					throw new ArithmeticException();
 				}
 				next = new Expression();
@@ -63,7 +63,7 @@ public class Expression {
 			{
 				if((leftTemp.simpleOrComplex&&leftTemp.abc==null&&leftTemp.num==-1)||(temp.simpleOrComplex&&temp.abc==null&&temp.num==-1))
 				{
-					System.out.println("ERROR!3");
+					//System.out.println("ERROR!3");
 					throw new ArithmeticException();
 				}
 				next = new Expression();
@@ -79,7 +79,7 @@ public class Expression {
 				i++;
 				if(i>=expressionInput.length())
 				{
-					System.out.println("ERROR!10");
+					//System.out.println("ERROR!10");
 					throw new ArithmeticException();
 				}
 				for(;expressionInput.charAt(i)==' ';i++);
@@ -88,7 +88,7 @@ public class Expression {
 					j++;
 					if((j-i)>=18)
 					{
-						System.out.println("ERROR!4");
+						//System.out.println("ERROR!4");
 						throw new ArithmeticException();
 					}
 					if (j==expressionInput.length())
@@ -96,7 +96,7 @@ public class Expression {
 				}
 				if(i==j)
 				{
-					System.out.println("ERROR!5");
+					//System.out.println("ERROR!5");
 					throw new ArithmeticException();
 				}
 				temp.pow=Long.parseLong(expressionInput.substring(i,j));
@@ -118,7 +118,7 @@ public class Expression {
 					{
 						if (x>0)
 						{
-							System.out.println("ERROR!6");
+							//System.out.println("ERROR!6");
 							throw new ArithmeticException();
 						}
 						break;
@@ -130,7 +130,7 @@ public class Expression {
 					temp.right=next;
 					temp=next;
 				}
-				next.Set(expressionInput.substring(i+1,j));
+				next.set(expressionInput.substring(i+1,j));
 				if (head.down==null && head.right==null)
 				{
 					head.down=next;
@@ -176,7 +176,7 @@ public class Expression {
 					j++;
 					if((j-i)>=18)
 					{
-						System.out.println("ERROR!7");
+						//System.out.println("ERROR!7");
 						throw new ArithmeticException();
 					}
 					if (j==expressionInput.length())
@@ -202,14 +202,14 @@ public class Expression {
 			}
 			else if (expressionInput.charAt(i)!='\t'&&expressionInput.charAt(i)!=' ')
 			{
-				System.out.println("ERROR!8");
+				//System.out.println("ERROR!8");
 				throw new ArithmeticException();
 			}
 			i++;
 		}
 		if(next.simpleOrComplex&&next.abc==null&&next.num==-1)
 		{
-			System.out.println("ERROR!9");
+			//System.out.println("ERROR!9");
 			throw new ArithmeticException();
 		}
 	}
@@ -227,7 +227,13 @@ public class Expression {
 		positiveOrNegative=true;
 		thisExpression=null;
 	}
-	public void printout(StringBuffer finalResult)
+	
+	public String printout(){
+		StringBuffer finalResult = new StringBuffer();
+		printoutRec(finalResult);
+		return finalResult.toString();
+	}
+	private void printoutRec(StringBuffer finalResult)
 	{
 		if (simpleOrComplex)
 		{
@@ -252,12 +258,12 @@ public class Expression {
 				{
 					//System.out.print('(');
 					finalResult.append("(");
-					leftHead.printout(finalResult);
+					leftHead.printoutRec(finalResult);
 					//System.out.print(')');
 					finalResult.append(")");
 				}
 				else
-					leftHead.printout(finalResult);
+					leftHead.printoutRec(finalResult);
 				if(leftHead.pow!=1)
 				{
 					//System.out.print('^');
@@ -275,12 +281,12 @@ public class Expression {
 					{
 						//System.out.print('(');
 						finalResult.append("(");
-						next.printout(finalResult);
+						next.printoutRec(finalResult);
 						//System.out.print(')');
 						finalResult.append(")");
 					}
 					else
-						next.printout(finalResult);
+						next.printoutRec(finalResult);
 					if(next.pow!=1)
 					{
 						//System.out.print('^');
@@ -312,20 +318,18 @@ public class Expression {
 		
 
 	}
-
-	public String getExpression(String Input){
-		try{
-			Set(Input);
-		}
-		catch(ArithmeticException e){
-			return "Error";
-		}
-		StringBuffer finalResult = new StringBuffer();
-		printout(finalResult);
-		return finalResult.toString();
-	}
 	
-	public void change(String[][] x,int n)
+	public Expression simplify(SimplifyVarList sVar){
+		String[][] x=sVar.get();
+		int n=sVar.length();
+		Expression result = new Expression();
+		result.set(thisExpression);
+		result.simplifyRec();
+		result.change(x, n);
+		result.simplifyRec();
+		return result;
+	}
+	private void change(String[][] x,int n)
 	{
 		if(simpleOrComplex)
 		{
@@ -353,7 +357,7 @@ public class Expression {
 			}
 		}
 	}
-	public void simplify()
+	private void simplifyRec()
 	{
 		if(simpleOrComplex)
 		{
@@ -374,7 +378,7 @@ public class Expression {
 				Expression lalalaTemp=null;
 				for(j=i;j!=null;j=j.right)
 				{
-					j.simplify();
+					j.simplifyRec();
 					if(!j.abcOrNum&&j.simpleOrComplex)
 					{
 						if(leftTemp==null)
@@ -442,7 +446,18 @@ public class Expression {
 		}
 	}
 	
-	public int derivative(String var)
+	
+
+	public Expression derivative(DerivativeVar dVar){
+		String x = dVar.get();
+		Expression result = new Expression();
+		result.set(thisExpression);
+		result.simplifyRec();
+		result.derivativeRec(x);
+		result.simplifyRec();
+		return result;
+	}
+	public int derivativeRec(String var)
 	{
 		int flag =1;
 		if(simpleOrComplex)
@@ -466,15 +481,15 @@ public class Expression {
 					{
 						Expression copy = new Expression();
 						copy.pow=j.pow;
-						copy.Set(j.thisExpression);
+						copy.set(j.thisExpression);
 						copy.right = j.right;
 						j.right = copy;
 						j.pow=1;
-						flag *= j.derivative(var);
+						flag *= j.derivativeRec(var);
 						j=j.right;
 					}
 					else 
-						flag = j.derivative(var);
+						flag = j.derivativeRec(var);
 					if (flag == 0)
 					{
 						flag2=0;
@@ -508,51 +523,5 @@ public class Expression {
 		}
 		return flag;
 	}
-	
-	public String Command(String commandInput)
-	{
-		Expression lalala=new Expression();
-		lalala.Set(thisExpression);
-		lalala.simplify();
-		if(commandInput.substring(1,4).equals("d/d"))
-		{
-			String var = new String();
-			int j;
-			for(j=4;j<commandInput.length()&&commandInput.charAt(j)!= ' ';j++);
-			var = commandInput.substring(4,j);
-			//System.out.println(var);
-			lalala.derivative(var);
-		}
-		else if (commandInput.substring(1,9).equals("simplify"))
-		{
-			String[][] x=new String[100][2];
-			int n=0;
-			for(int i=9;i<commandInput.length();i++)
-			{
-				if((commandInput.charAt(i)>='A'&&commandInput.charAt(i)<='Z') || (commandInput.charAt(i)>='a'&&commandInput.charAt(i)<='z'))
-				{
-					int j;
-					for(j=i;commandInput.charAt(j)!= '=';j++);
-					x[n][0] = commandInput.substring(i,j);
-					i = j;
-				}
-				else if(commandInput.charAt(i)>='0'&&commandInput.charAt(i)<='9')
-				{
-					int j;
-					for(j=i;j <commandInput.length()&&commandInput.charAt(j)!= ' ';j++);
-					x[n][1] = commandInput.substring(i,j);
-					i = j;
-					n++;
-				}
-			}
-			lalala.change(x,n);
-		}
-		lalala.simplify();
-		StringBuffer finalResult = new StringBuffer();
-		lalala.printout(finalResult);
-		System.out.println(finalResult);
-		return finalResult.toString();
 
-	}
-	
 }

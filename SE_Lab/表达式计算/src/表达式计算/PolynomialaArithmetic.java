@@ -1,56 +1,12 @@
-package ±í´ïÊ½¼ÆËã;
+package è¡¨è¾¾å¼è®¡ç®—;
 
 import java.util.*;
 
 public class PolynomialaArithmetic {
 
 	public static void main(String[] args) {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-		Scanner lalala = new Scanner(System.in);
-		String Input ;
-		int la=0;
-		Expression a=new Expression();
-		System.out.println("Welcome to the PolynomialaArithmetic monitor.\nServer version: 1.0.9\nCopyright (c) 2016¡£\nType '!h' for help. Type '!q' for exit.\n ");
-		while(true){
-			Input = lalala.nextLine();
-			try{
-			if(Input.length()>0&&Input.charAt(0)=='!')
-			{
-				if(Input.equals("!q")){
-					System.out.println("end");
-					break;
-				}
-				else if (Input.equals("!h"))
-					System.out.println("À²À²À²ÀÁµÃĞ´À²¾Í¸ú\n!ÀıÈç£º!simplify a=1  !d/dx \n±ØĞëÑÏ¸ñ°´ÕÕ¹æÔòÊäÈë£¡");
-
-				else if(Input.substring(0,4).equals("!d/d")||Input.substring(0,9).equals("!simplify"))
-				{
-					if(la==0)
-						System.out.println("ÉĞÎ´ÊäÈëÈÎºÎ±í´ïÊ½£¬ÎŞ·¨Ö´ĞĞÃüÁî¡£\n");
-					else 
-					{
-						String finalResult = a.Command(Input);
-						System.out.println(finalResult);
-					}
-				}
-			}
-			else 
-			{
-				la=1;
-				//a.Set(Input);
-				//a.printout(a.finalResult);
-				//System.out.print("\n");
-				String finalResult = a.getExpression(Input);
-				System.out.println(finalResult);
-			}
-		}
-			catch(Exception e)
-			{
-				System.out.println("ÊäÈë²»ºÏ·¨£¡\n"+e);
-			}
-		}
-		lalala.close();
+		// TODO Ã—Ã”Â¶Â¯Ã‰ÃºÂ³Ã‰ÂµÃ„Â·Â½Â·Â¨Â´Ã¦Â¸Ã¹
+		Boundary boundary = new Boundary();
+		boundary.Loop();
 	}
-
-
 }
